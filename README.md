@@ -1,12 +1,12 @@
 # Unnest Components
 
-*Filter > Unnest Components* ‘unnests’ or ‘flattens’ components, i.e. it decomposes composites step by step until there is only one level of composition. You may need this for satisfying some fontbakery tests in TTF exports, if you are in a situation where this is required for your project. Nested components are not bad per se.
+*Filter > Unnest Components* (de: *Komponenten entpacken*) ‘unpacks’, ‘unnests’ or ‘flattens’ components, i.e. it decomposes composites step by step until there is only one level of composition. You may need this for satisfying some fontbakery tests in TTF exports, if you are in a situation where this is required for your project. Nested components are not bad per se.
 
 This filter only makes sense for TrueType exports (.ttf or TT-flavored .woff and .woff2). It has no effect on CFF exports (.otf or CFF-flavored .woff and .woff2) because PostScript-based fonts have no components.
 
 ## Custom Parameter
  
-You can have the filter run at export time with a custom parameter. This can be useful for automatically fixing interpolations. To do so, go to *File > Font Info > Exports,* select an instance, add a *Custom Parameter* with the plus button, choose *Filter* from the menu that pops up, and write `UnnestComponents` in the filter value. 
+You can have the filter run at export time with a custom parameter. This can be useful for automatically fixing interpolations. To do so, go to *File > Font Info > Exports,* select an instance, add a *Custom Parameter* with the plus button, choose *Filter* from the menu that pops up, and write `UnnestComponents` in the filter value.
 
 
 ## Installation

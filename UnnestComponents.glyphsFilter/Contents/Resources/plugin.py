@@ -38,10 +38,11 @@ class UnnestComponents(FilterWithoutDialog):
 
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
-		while nestedComponents(layer):
-			for c in layer.components:
-				if c.componentLayer.components:
-					c.decompose()
+		for currLayer in layer.parent.layers:
+			while nestedComponents(currLayer):
+				for c in currLayer.components:
+					if c.componentLayer.components:
+						c.decompose()
 
 	@objc.python_method
 	def __file__(self):

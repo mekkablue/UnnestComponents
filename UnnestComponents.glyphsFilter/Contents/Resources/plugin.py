@@ -3,25 +3,26 @@
 ###########################################################################################################
 #
 #
-#	Filter without dialog plug-in
+# Filter without dialog plug-in
 #
-#	Read the docs:
-#	https://github.com/schriftgestalt/GlyphsSDK/tree/master/Python%20Templates/Filter%20without%20Dialog
+# Read the docs:
+# https://github.com/schriftgestalt/GlyphsSDK/tree/master/Python%20Templates/Filter%20without%20Dialog
 #
 #
 ###########################################################################################################
 
 import objc
-from GlyphsApp import *
-from GlyphsApp.plugins import *
+from GlyphsApp import Glyphs
+from GlyphsApp.plugins import FilterWithoutDialog
 
-@objc.python_method
+
 def nestedComponents(layer):
 	componentsInComponents = [c.componentLayer.components for c in layer.components]
 	return any(componentsInComponents)
 
+
 class UnnestComponents(FilterWithoutDialog):
-	
+
 	@objc.python_method
 	def settings(self):
 		self.menuName = Glyphs.localize({
@@ -33,7 +34,7 @@ class UnnestComponents(FilterWithoutDialog):
 			# 'jp': '私のフィルター',
 			# 'ko': '내 필터',
 			# 'zh': '我的过滤器',
-			})
+		})
 
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):

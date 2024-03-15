@@ -42,6 +42,7 @@ class UnnestComponents(FilterWithoutDialog):
 			while nestedComponents(currLayer):
 				for c in currLayer.components:
 					if c.componentLayer.components:
+						c.automaticAlignment = False
 						c.decompose()
 
 	@objc.python_method

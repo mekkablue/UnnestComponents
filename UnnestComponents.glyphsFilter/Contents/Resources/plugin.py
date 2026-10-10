@@ -35,10 +35,32 @@ class UnnestComponents(FilterWithoutDialog):
 			# 'ko': '내 필터',
 			# 'zh': '我的过滤器',
 		})
+		self._processedGlyphs = {}
 
 	@objc.python_method
 	def filter(self, layer, inEditView, customParameters):
-		for currLayer in layer.parent.layers:
+		glyph = layer.parent
+		if not glyph:
+			layersToProcess = [layer]
+		else:
+			font = glyph.parent
+			if not font:
+				layersToProcess = [layer]
+			else:
+				if len(font.masters) > 1:
+					fontId = id(font)
+					if fontId not in self._processedGlyphs:
+						self._processedGlyphs[fontId] = set()
+					if glyph.name in self._processedGlyphs[fontId]:
+						return
+					self._processedGlyphs[fontId].add(glyph.name)
+					layersToProcess = [glyph.layers[m.id] for m in font.masters]
+				else:
+					layersToProcess = glyph.layers
+
+		for currLayer in layersToProcess:
+			if not currLayer:
+				continue
 			while nestedComponents(currLayer):
 				for c in currLayer.components:
 					if c.componentLayer.components:

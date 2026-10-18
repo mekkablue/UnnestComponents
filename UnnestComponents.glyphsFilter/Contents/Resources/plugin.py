@@ -21,6 +21,38 @@ def nestedComponents(layer):
 	return any(componentsInComponents)
 
 
+def compatibleLayerGroups(glyph, font):
+	"""
+	One group per master: the master layer plus all brace and bracket layers
+	that are compatible with it (same compareString). Brace layers are what
+	makes up the virtual masters of a variable font.
+	"""
+	groups = []
+	for master in font.masters:
+		masterLayer = glyph.layers[master.id]
+		if not masterLayer:
+			continue
+		compareString = masterLayer.compareString()
+		group = [masterLayer]
+		for currLayer in glyph.layers:
+			if currLayer.layerId == masterLayer.layerId or not currLayer.isSpecialLayer:
+				continue
+			if currLayer.associatedMasterId == master.id and currLayer.compareString() == compareString:
+				group.append(currLayer)
+		groups.append(group)
+	return groups
+
+
+def unnestLayerGroup(layers):
+	"""Decomposes the same components, by index, in all layers of a compatible group."""
+	while any(nestedComponents(currLayer) for currLayer in layers):
+		componentsPerLayer = [list(currLayer.components) for currLayer in layers]
+		for componentGroup in zip(*componentsPerLayer):
+			if any(c.componentLayer.components for c in componentGroup):
+				for c in componentGroup:
+					c.decompose()
+
+
 class UnnestComponents(FilterWithoutDialog):
 
 	@objc.python_method
@@ -54,17 +86,12 @@ class UnnestComponents(FilterWithoutDialog):
 					if glyph.name in self._processedGlyphs[fontId]:
 						return
 					self._processedGlyphs[fontId].add(glyph.name)
-					layersToProcess = [glyph.layers[m.id] for m in font.masters]
+					layersToProcess = compatibleLayerGroups(glyph, font)
 				else:
-					layersToProcess = glyph.layers
+					layersToProcess = [[currLayer] for currLayer in glyph.layers]
 
-		for currLayer in layersToProcess:
-			if not currLayer:
-				continue
-			while nestedComponents(currLayer):
-				for c in currLayer.components:
-					if c.componentLayer.components:
-						c.decompose()
+		for layerGroup in layersToProcess:
+			unnestLayerGroup([currLayer for currLayer in layerGroup if currLayer])
 
 	@objc.python_method
 	def __file__(self):

@@ -13,15 +13,15 @@
 	<key>CFBundleName</key>
 	<string>Unnest Components</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string> <!-- 1.0 -->
+	<string>1.1</string> <!-- 1.1 -->
 	<key>CFBundleVersion</key>
-	<string>1</string> <!-- 123 -->
+	<string>2</string> <!-- 123 -->
 	<key>UpdateFeedURL</key>
 	<string>https://raw.githubusercontent.com/mekkabue/UnnestComponents/master/UnnestComponents.glyphsFilter/Contents/Info.plist</string>
 	<key>productPageURL</key>
 	<string>https://github.com/mekkabue/UnnestComponents</string>
 	<key>productReleaseNotes</key>
-	<string>Initial Release</string>
+	<string>Also unnests components in brace and bracket layers, i.e., the virtual masters of variable fonts.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Rainer Erich Scheichelbauer, 2023</string>
 	<key>NSPrincipalClass</key>
